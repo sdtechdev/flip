@@ -12,22 +12,8 @@ end
 module MockRails
   class << self
     def cookie(hash)
-      case ActiveSupport.version
-      when Gem::Requirement.new("~> 4.0") then rails_4
-      when Gem::Requirement.new("~> 5.0") then rails_5
-      else raise NotImplementedError, "Rails #{ActiveSupport.version} not suported"
-      end.update(hash)
-    end
-
-    private
-
-    def rails_4
-      ActionDispatch::Cookies::CookieJar.new(nil, "www.example.com", false)
-    end
-
-    def rails_5
       request_mock = Struct.new(:host, :ssl?).new("www.example.com", false)
-      ActionDispatch::Cookies::CookieJar.new(request_mock)
+      ActionDispatch::Cookies::CookieJar.new(request_mock).update(hash)
     end
   end
 end
