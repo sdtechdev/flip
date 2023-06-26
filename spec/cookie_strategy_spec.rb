@@ -12,7 +12,7 @@ end
 module MockRails
   class << self
     def cookie(hash)
-      request_mock = Struct.new(:host, :ssl?).new("www.example.com", false)
+      request_mock = ActionDispatch::Request.new('HTTP_HOST' => 'www.example.com')
       ActionDispatch::Cookies::CookieJar.new(request_mock).update(hash)
     end
   end
